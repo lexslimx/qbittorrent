@@ -1,0 +1,29 @@
+     sonarr:
+            image: linuxserver/sonarr
+            container_name: sonarr
+            environment:
+                - PUID=1000
+                - PGID=1000
+                - TZ=Europe/London
+                - UMASK_SET=022 #optional
+            volumes:
+                - C:\containerdata\sonarr\config:/config
+                - C:\containerdata\sonarr\tv:/tv
+                - C:\containerdata\qbittorrentdownloads:/downloads
+            ports:
+                - 8989:8989
+            restart: unless-stopped
+        jackett:
+            image: linuxserver/jackett
+            container_name: jackett
+            environment:
+                - PUID=1000
+                - PGID=1000
+                - TZ=Europe/London
+                - RUN_OPTS=run options here #optional
+            volumes:
+                - C:\containerdata\jackett\config:/config
+                - C:\containerdata\jackett\blackhole:/downloads
+            ports:
+                - 9117:9117
+            restart: unless-stopped
