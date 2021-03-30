@@ -1,45 +1,18 @@
 ---
-    version: "2"
-    services:
-        qbittorrent:
-            image: linuxserver/qbittorrent
-            container_name: qbittorrent
-            environment:
-            - PUID=1000
-            - PGID=1000
-            - TZ=Europe/London
-            - UMASK_SET=022
-            - WEBUI_PORT=8080
-            volumes:
-            - $HOME/containerdata/qbittorrent/config:/config
-            - $HOME/containerdata/qbittorrent/downloads:/downloads
-            ports:
-            - 6881:6881
-            - 6881:6881/udp
-            - 8080:8080
-            restart: unless-stopped    
-        jackett:
-            image: linuxserver/jackett
-            container_name: jackett
-            environment:
-                - PUID=1000
-                - PGID=1000
-                - TZ=Europe/London
-                - RUN_OPTS=run options here #optional
-            volumes:
-                - $HOME/containerdata/jackett/config:/config
-                - $HOME/containerdata/jackett/blackhole:/downloads
-            ports:
-                - 9117:9117
-            restart: unless-stopped
-        web:
-            image: nginx
-            volumes:
-                - $HOME/containerdata/qbittorrent/downloads:/etc/nginx/conf.d/mysite.template
-            ports:
-                - "80:80"
-            environment:
-                - NGINX_HOST=foobar.com
-                - NGINX_PORT=80
-            command: /bin/bash -c "envsubst < /etc/nginx/conf.d/mysite.template > /etc/nginx/conf.d/default.conf && exec nginx -g 'daemon off;'"
-   
+version: "2.1"
+services:
+  qbittorrent:
+    image: ghcr.io/linuxserver/qbittorrent
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+      - WEBUI_PORT=8080
+    volumes:
+      - /mnt/alexfs/qbittorrent/config:/config
+      - /mnt/alexfs/Downloads:/downloads
+    ports:
+      - 6881:6881
+      - 6881:6881/udp
+      - 8080:8080
+    restart: unless-stopped
